@@ -12,7 +12,7 @@ import type { Locals } from "$lib/types";
 	guarantees are made. Don't use it to organise your life.)
 */
 
-const base = "https://api.svelte.dev";
+const base = "http://localhost:8000";
 
 export async function api(
   request: Request<Locals>,
@@ -20,11 +20,12 @@ export async function api(
   data?: {},
 ) {
   // user must have a cookie set
-  if (!request.locals.userid) {
-    return { status: 401 };
-  }
+  //   if (!request.locals.userid) {
+  //     return { status: 401 };
+  //   }
 
-  const res = await fetch(`${base}/${resource}`, {
+  // localhost:8000/recipes
+  const res: Response = await fetch(`${base}/${resource}`, {
     method: request.method,
     headers: {
       "content-type": "application/json",
@@ -35,7 +36,7 @@ export async function api(
   // if the request came from a <form> submission, the browser's default
   // behaviour is to show the URL corresponding to the form's "action"
   // attribute. in those cases, we want to redirect them back to the
-  // /todos page, rather than showing the response
+  // /recipes page, rather than showing the response
   if (
     res.ok && request.method !== "GET" &&
     request.headers.accept !== "application/json"
@@ -43,7 +44,7 @@ export async function api(
     return {
       status: 303,
       headers: {
-        location: "/todos",
+        location: "/recipes",
       },
     };
   }
